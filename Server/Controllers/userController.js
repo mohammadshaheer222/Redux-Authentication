@@ -12,6 +12,7 @@ const registerUser = asyncHandler(async (req, res, next) => {
   }
 
   const userExist = await User.findOne({ email });
+
   if (userExist) {
     return next(new ErrorHandler("User already exist", 400));
   }
@@ -19,16 +20,17 @@ const registerUser = asyncHandler(async (req, res, next) => {
   const user = await User.create({ name, email, password });
 
   if (!user) {
-    return next(new ErrorHandler("Invalid User Data"));
+    return next(new ErrorHandler("Invalid User Data",400));
   }
 
-  generateToken(user, res);
+  // generateToken(user, res);
   res.status(201).json({ success: true, user });
 });
 
 //login
 const loginUser = asyncHandler(async (req, res, next) => {
   const { email, password } = req.body;
+  console.log(req.body)
 
   if (!email || !password) {
     return next(new ErrorHandler("Please provide all fields", 400));
@@ -40,7 +42,7 @@ const loginUser = asyncHandler(async (req, res, next) => {
   }
 
   const isPasswordValid = await user.comparePassword(password);
-  console.log(isPasswordValid);
+
   if (!isPasswordValid) {
     return next(new ErrorHandler("Invalid credentials", 400));
   }
@@ -51,10 +53,15 @@ const loginUser = asyncHandler(async (req, res, next) => {
 
 //logout
 const logoutUser = asyncHandler(async (req, res, next) => {
+  console.log("start")
   res.cookie("token", "", {
     httpOnly: true,
     expires: new Date(0),
+    secure: process.env.NODE_ENV !== "development",
+    sameSite: "strict",
   });
+
+  console.log("end")
 
   res.status(200).json({ success: true, message: "User logged out" });
 });
@@ -103,3 +110,5 @@ module.exports = {
   userProfile,
   updateUserProfile,
 };
+
+const signUp = asyncHandler(async (req, res, next) => {}); 
