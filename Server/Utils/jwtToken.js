@@ -1,6 +1,5 @@
 const generateToken = (user, res) => {
   const token = user.getJwtToken();
-  console.log(token)
 
   const options = {
     httpOnly: true,

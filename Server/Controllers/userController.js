@@ -30,7 +30,6 @@ const registerUser = asyncHandler(async (req, res, next) => {
 //login
 const loginUser = asyncHandler(async (req, res, next) => {
   const { email, password } = req.body;
-  console.log(req.body)
 
   if (!email || !password) {
     return next(new ErrorHandler("Please provide all fields", 400));
@@ -48,20 +47,22 @@ const loginUser = asyncHandler(async (req, res, next) => {
   }
 
   generateToken(user, res);
-  res.status(200).json({ success: true, user });
+  res.status(200).json({
+    success: true,
+    _id: user._id,
+    name: user.name,
+    email: user.email,
+  });
 });
 
 //logout
 const logoutUser = asyncHandler(async (req, res, next) => {
-  console.log("start")
   res.cookie("token", "", {
     httpOnly: true,
     expires: new Date(0),
     secure: process.env.NODE_ENV !== "development",
     sameSite: "strict",
   });
-
-  console.log("end")
 
   res.status(200).json({ success: true, message: "User logged out" });
 });

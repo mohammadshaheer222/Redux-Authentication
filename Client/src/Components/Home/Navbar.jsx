@@ -35,7 +35,7 @@ const Navbar = () => {
 
         {userInfo ? (
           <>
-            <p>{userInfo.user.name}</p>
+            <p>{userInfo.name}</p>
             <button onClick={logoutHandler} className="bg-red-500 px-4 py-1">
               Logout
             </button>

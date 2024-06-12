@@ -3,6 +3,8 @@ import HomePage from "./Pages/HomePage";
 import Navbar from "./Components/Home/Navbar";
 import SignUpPage from "./Pages/SignUpPage";
 import Login from "./Components/Login/Login";
+import ProfilePage from "./Pages/ProfilePage";
+import PrivateRoute from "./Components/PrivateRoute";
 
 const App = () => {
   return (
@@ -12,7 +14,10 @@ const App = () => {
           <Route index element={<HomePage />} />
         </Route>
         <Route path="/register" element={<SignUpPage />} />
-        <Route path="/login" element={<Login />}/>
+        <Route path="/login" element={<Login />} />
+        <Route path="" element={<PrivateRoute />}>
+          <Route path="/profile" element={<ProfilePage />} />
+        </Route>
       </Routes>
     </div>
   );
